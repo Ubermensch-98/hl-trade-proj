@@ -1,5 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# VS Code settings
+.vscode/
+!.vscode/settings.json     # (optional) keep project-specific settings
+!.vscode/tasks.json        # (optional) keep build/test tasks
+!.vscode/launch.json       # (optional) keep debug configurations
+!.vscode/extensions.json   # (optional) recommend extensions
+
+# Local history & workspace files
+.history/
+*.code-workspace
+
+# VS Code cache
+.vscode-test/
+
 # dependencies
 /node_modules
 /.pnp
