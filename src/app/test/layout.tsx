@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <header className="w-full bg-[#140929] text-white shadow-md">
           <div className="flex w-full items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
             <Link href="/" className="flex items-center gap-3">
-              {/* Logo scales with viewport height; width stays auto → aspect ratio preserved */}
+              {/* Logo scales with viewport height */}
               <Image
                 src="/logo.svg"
                 alt="IVX Trade"

@@ -1,11 +1,13 @@
 "use client";
 
+import { config } from "@/app/lib/provider";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { toast } from "sonner";
 
 export default function ConnectButton() {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected } = useAccount({ config });
   const { connect, connectors, isPending } = useConnect({
+    config,
     mutation: {
       onSuccess: (data) => {
         toast.success("Wallet connected!", {

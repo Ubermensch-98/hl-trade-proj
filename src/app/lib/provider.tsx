@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { mainnet } from "wagmi/chains";
 import { injected } from "wagmi/connectors";
 
-const config = createConfig({
+export const config = createConfig({
   chains: [mainnet],
   transports: { [mainnet.id]: http() },
   connectors: [injected()],
