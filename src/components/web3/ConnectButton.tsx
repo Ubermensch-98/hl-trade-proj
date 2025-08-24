@@ -1,6 +1,6 @@
 "use client";
 
-import { config } from "@/app/lib/provider";
+import { wagmiConfig as config } from "@/config/wagmiConfig";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { toast } from "sonner";
 

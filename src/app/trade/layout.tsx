@@ -1,6 +1,8 @@
+import '@rainbow-me/rainbowkit/styles.css';
+
 import React from "react";
-import Providers from "../lib/provider";
-import ConnectButton from "@/components/ConnectButton";
+import Providers from "@/providers/provider";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Toaster } from "@/components/ui/sonner";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Main content area */}
         <main className="flex-grow bg-[#0b021d]">
-          <div className="w-full px-4 py-6 sm:px-6 lg:px-8">{children}</div>
+          <div className="relative w-full px-4 py-6 sm:px-6 lg:px-8">{children}</div>
         </main>
         <Toaster
           duration={2000}
