@@ -1,13 +1,15 @@
-"use client";
+'use client';
 
-import { createChart, 
-        ISeriesApi, 
-        UTCTimestamp, 
-        CandlestickData, 
-        CrosshairMode, 
-        CandlestickSeries} from "lightweight-charts";
-import { useEffect, useRef } from "react";
-import { CandleParams, useCandles } from "@/hooks/useCandles";
+import {
+  createChart,
+  ISeriesApi,
+  UTCTimestamp,
+  CandlestickData,
+  CrosshairMode,
+  CandlestickSeries,
+} from 'lightweight-charts';
+import { useEffect, useRef } from 'react';
+import { CandleParams, useCandles } from '@/hooks/useCandles';
 
 function toCandlestickSeries(raw: any[]): CandlestickData[] {
   // Ensure ascending by time; convert ms → seconds
@@ -23,7 +25,7 @@ function toCandlestickSeries(raw: any[]): CandlestickData[] {
 
 export function CandlesChart(props: CandleParams) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
+  const seriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
   const chartRef = useRef<ReturnType<typeof createChart> | null>(null);
 
   const { data, isLoading, error } = useCandles(props);
@@ -36,7 +38,7 @@ export function CandlesChart(props: CandleParams) {
       width: containerRef.current.clientWidth,
       height: containerRef.current.clientHeight,
       layout: {
-        background: { color: '#253248' },
+        background: { color: '#151C28' },
         textColor: 'rgba(255, 255, 255, 0.9)',
       },
       grid: {
@@ -62,15 +64,14 @@ export function CandlesChart(props: CandleParams) {
       borderUpColor: '#4bffb5',
       wickDownColor: '#838ca1',
       wickUpColor: '#838ca1',
-      priceFormat: { type: "price", precision: 2, minMove: 0.01 },
+      priceFormat: { type: 'price', precision: 2, minMove: 0.01 },
     });
-
 
     chartRef.current = chart;
     seriesRef.current = candleSeries;
 
     // Resize handling
-    const ro = new ResizeObserver(entries => {
+    const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
         chart.applyOptions({ width, height: Math.max(300, height) });
@@ -96,8 +97,9 @@ export function CandlesChart(props: CandleParams) {
 
   if (error) return <div>Failed to load candles.</div>;
   return (
-    <div style={{ width: "100%", height: 420, position: "relative" }}>
-      {isLoading && <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center" }}>Loading…</div>}
-      <div ref={containerRef} style={{ width: "100%", height: "100%" }} />
-    </div>);
+    <div className="flex flex-col w-full h-[420px] border border-l-0 border-t-0 border-[#F9C3FE] relative">
+      {isLoading && <div className="absolute inset-0 grid place-items-center">Loading…</div>}
+      <div ref={containerRef} className="w-full h-full" />
+    </div>
+  );
 }
