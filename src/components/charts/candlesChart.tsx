@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import {
@@ -87,7 +88,6 @@ export function CandlesChart(props: CandleParams) {
     };
   }, []);
 
-  // Whenever new data arrives, setData once (cheap) then autoscale
   useEffect(() => {
     if (!seriesRef.current || !data) return;
     const candles = toCandlestickSeries(data);

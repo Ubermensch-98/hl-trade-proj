@@ -75,7 +75,7 @@ export function CandlestickChartToolbar({
   return (
     <div
       className={`w-full flex flex-wrap items-center gap-6 rounded-br-lg 
-        border border-[#F9C3FE] bg-[#140929] p-2 md:p-3 ${className}`}
+        border border-l-0 border-[#F9C3FE] bg-[#0f0f0f] p-2 md:p-3 ${className}`}
     >
       {/* Interval combobox */}
       <div className="flex items-center">
@@ -113,7 +113,7 @@ export function CandlestickChartToolbar({
                       data-[selected=true]:bg-[#F9C3FE] data-[selected=true]:text-[#140929]"
                     >
                       <Check
-                        className={`mr-2 h-4 w-4 ${interval === item ? 'opacity-100' : 'opacity-0'}`}
+                        className={`mr-2 h-6 w-6 ${interval === item ? 'opacity-100' : 'opacity-0'}`}
                       />
                       {item}
                     </CommandItem>
@@ -154,10 +154,11 @@ export function CandlestickChartToolbar({
       <div className="flex items-center gap-2 ml-auto">
         <ToggleGroup
           type="single"
+          defaultValue='ETH'
           value={asset}
           onValueChange={handleAssetChange}
           variant="outline"
-          className="flex"
+          className="flex border border-[#F9C3FE] cursor-pointer"
         >
           <ToggleGroupItem
             value="ETH"
