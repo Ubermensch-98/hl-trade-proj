@@ -99,7 +99,7 @@ export function CandlesChart(props: CandleParams) {
   return (
     <div className="flex flex-col w-full h-[420px] border border-l-0 border-t-0 border-[#F9C3FE] relative">
       {isLoading && <div className="absolute inset-0 grid place-items-center">Loading…</div>}
-      <div ref={containerRef} className="w-full h-full" />
+      <div id="chart-container" ref={containerRef} className="w-full h-full" />
     </div>
   );
 }

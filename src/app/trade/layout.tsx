@@ -1,15 +1,14 @@
-"use client";
+'use client';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
-import React from "react";
-import Providers from "@/providers/provider";
+import React from 'react';
+import Providers from '@/providers/provider';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from '@/components/ui/sonner';
 import { HyperliquidFunds } from '@/components/web3/HyperliquidFunds';
-import Image from "next/image";
-import Link from "next/link";
-
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -20,34 +19,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex w-full items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
             <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
               <Link href="/" className="flex items-center gap-3">
-              {/* Logo scales with viewport height */}
-              <Image
-                src="/logo.svg"
-                alt="IVX Trade"
-                width={48}
-                height={48}
-                className="h-[clamp(24px,6vh,48px)] w-auto"
-              />
-              <span className="text-xl font-bold leading-none">IVX Trade</span>
+                {/* Logo scales with viewport height */}
+                <Image
+                  src="/logo.svg"
+                  alt="IVX Trade"
+                  width={48}
+                  height={48}
+                  className="h-[clamp(24px,6vh,48px)] w-auto"
+                />
+                <span className="text-xl font-bold leading-none">IVX Trade</span>
               </Link>
 
               <HyperliquidFunds />
             </div>
 
-            <nav className="space-x-4">
-            </nav>
-            
+            <nav className="space-x-4"></nav>
+
             <ConnectButton />
           </div>
         </header>
 
         {/* Main content area */}
         <main className="flex-grow bg-[#0b021d]">
-          <div className="relative w-full px-4 py-6 sm:px-6 lg:px-8">{children}</div>
+          <div className="relative w-full h-full px-4 py-6 sm:px-6 lg:px-8">{children}</div>
         </main>
-        <Toaster
-          duration={2000}
-        />
+        <Toaster duration={2000} />
 
         {/* Footer */}
         <footer className="w-full flex flex-col bg-[#140929] text-white">

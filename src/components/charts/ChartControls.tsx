@@ -154,7 +154,7 @@ export function CandlestickChartToolbar({
       <div className="flex items-center gap-2 ml-auto">
         <ToggleGroup
           type="single"
-          defaultValue='ETH'
+          defaultValue="ETH"
           value={asset}
           onValueChange={handleAssetChange}
           variant="outline"
@@ -192,7 +192,13 @@ export function CandlestickChartToolbar({
               data-[state=on]:bg-[#F9C3FE] data-[state=on]:text-[#140929]
               cursor-pointer"
           >
-            <Image src="/HL_symbol_dark green.svg" alt="Hype" width={12} height={12} className="mr-1 h-4 w-4" />
+            <Image
+              src="/HL_symbol_dark green.svg"
+              alt="Hype"
+              width={12}
+              height={12}
+              className="mr-1 h-4 w-4"
+            />
             HYPE
           </ToggleGroupItem>
         </ToggleGroup>

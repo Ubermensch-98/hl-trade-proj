@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { wagmiConfig as config } from "@/config/wagmiConfig";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { toast } from "sonner";
+import { wagmiConfig as config } from '@/config/wagmiConfig';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { toast } from 'sonner';
 
 export default function ConnectButton() {
   const { address, isConnected } = useAccount({ config });
@@ -10,15 +10,15 @@ export default function ConnectButton() {
     config,
     mutation: {
       onSuccess: (data) => {
-        toast.success("Wallet connected!", {
+        toast.success('Wallet connected!', {
           description: data?.accounts[0] ? `Address: ${data.accounts[0]}` : undefined,
-          className: "bg-blue-100 text-blue-900 border border-blue-300",
+          className: 'bg-blue-100 text-blue-900 border border-blue-300',
         });
       },
       onError: (error: Error) => {
-        toast.error("Connection failed!", {
+        toast.error('Connection failed!', {
           description: error?.message,
-          className: "bg-red-100 text-red-900 border border-red-300",
+          className: 'bg-red-100 text-red-900 border border-red-300',
         });
       },
     },

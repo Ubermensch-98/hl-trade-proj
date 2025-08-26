@@ -4,7 +4,7 @@ export async function POST(req: Request): Promise<NextResponse> {
   let body;
   try {
     body = await req.json();
-    console.log('🎞🎞🎞 route.ts body:', body);
+    // console.log('🎞🎞🎞 route.ts body:', body);
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
