@@ -53,24 +53,27 @@ export function DepositCard({
   const [error, setError] = useState<string>('');
   const amountRef = useRef<HTMLInputElement>(null);
 
-  const handleNetworkToggle = (checked: boolean) => {
-    setIsMainnet(checked);
-    const networkValue = checked ? 'mainnet' : 'testnet';
-    onNetworkChange?.(networkValue);
-  };
-
   const validate = (v: string) => {
     if (v === '') return 'Amount is required';
     const n = Number(v);
     if (Number.isNaN(n)) return 'Enter a valid number';
-    if (n > balance) return `Your balance is ${balance} USDC`;
+    if (n <= 0) return 'Amount must be greater than zero';
+    if (n > balance) return `Insufficient balance (max ${balance} USDC)`;
     if (n < minDeposit) return `Minimum is ${minDeposit} USDC`;
     return '';
+  };
+
+  const handleNetworkToggle = (checked: boolean) => {
+    setIsMainnet(checked);
+    const networkValue = checked ? 'mainnet' : 'testnet';
+    onNetworkChange?.(networkValue);
+    console.log('Network changed to:', networkValue);
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
     setAmount(v);
+    console.log('Amount changed to:', v);
     setError(validate(v));
   };
 
@@ -85,7 +88,8 @@ export function DepositCard({
     }
     const n = Number(amount);
     const network = isMainnet ? 'mainnet' : 'testnet';
-    onConfirmDeposit?.({ amount: n, network });
+    onConfirmDeposit?.({ amount: n, network: network });
+    console.log('Deposit confirmed:', { amount: n, network: network });
     setOpen(false); // close only on success
   };
 

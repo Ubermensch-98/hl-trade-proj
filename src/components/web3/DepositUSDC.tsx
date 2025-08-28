@@ -7,11 +7,12 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
   useReadContracts,
+  usePublicClient,
 } from 'wagmi';
 import { getAddress, erc20Abi, formatUnits, type Address } from 'viem';
 import { parseUnits } from 'viem';
 
-import { DepositCard } from '@/components/DepositCard';
+import { DepositCard } from '@/components/web3/DepositCard';
 
 // Chain IDs
 const ETHEREUM = 1;
@@ -43,14 +44,18 @@ export function DepositUSDC({
   defaultNetwork?: 'testnet' | 'mainnet';
 }) {
   const [network, setNetwork] = useState<'testnet' | 'mainnet'>(defaultNetwork);
+  const [depositError, setDepositError] = useState<string | null>(null);
+
   const chainId = network === 'mainnet' ? ARBITRUM_ONE : ARBITRUM_SEPOLIA;
   const token = USDC_ADDRESSES[chainId];
 
-  console.log('📃📃📃 Token address:', token);
-  console.log('📃📃📃 Chain ID:', chainId);
+  // console.log('📃📃📃 Token address:', token);
+  // console.log('📃📃📃 Chain ID:', chainId);
 
   // Account
   const { address, chainId: activeChainId } = useAccount();
+  // Public client
+  const publicClient = usePublicClient({ chainId: chainId });
   // Switch chain
   const { switchChainAsync } = useSwitchChain();
   // Write contract
@@ -58,12 +63,12 @@ export function DepositUSDC({
   // Wait for transaction
   const { isLoading: waiting, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const [depositError, setDepositError] = useState<string | null>(null);
-
   console.log('📃📃📃 useAccount address:', address);
 
+  // Make sure addresses are parsed
   const tokenAddr: Address | undefined = token ? getAddress(token) : undefined;
   const userAddr: Address | undefined = address ? getAddress(address) : undefined;
+
   /*
   Read balance logic
   */
@@ -87,7 +92,7 @@ export function DepositUSDC({
     },
   });
 
-  console.log('📃📃📃 Read contracts data:', readData);
+  // console.log('📃📃📃 Read contracts data:', readData);
 
   // Return early if there's an issue
   if (!token) return <div>USDC isn’t on this chain (in this mapping)</div>;
@@ -100,14 +105,18 @@ export function DepositUSDC({
   const decimals = Number(decRes?.result ?? 6);
   const balance = raw ? Number(formatUnits(raw, decimals)) : 0;
 
-  console.log('📃📃📃 User balance:', raw);
+  // console.log('📃📃📃 balRes and decRes:', balRes, decRes);
+
+  // console.log('🥩⚖🥩⚖🥩⚖ User raw balance:', raw);
+
+  // console.log('⚖⚖⚖ User balance:', balance);
 
   /*
   Deposit logic
   */
   const handleConfirmDeposit = async ({
     amount,
-    network: selectedNetwork,
+    network: selectedNetwork = 'mainnet',
   }: {
     amount: number;
     network: 'testnet' | 'mainnet';
@@ -122,22 +131,61 @@ export function DepositUSDC({
       const targetChainId = selectedNetwork === 'mainnet' ? ARBITRUM_ONE : ARBITRUM_SEPOLIA;
       const value = parseUnits(amount.toString(), decimals);
 
+      // console.log('💰💰💰 Parsed amount:', value);
+
       if (activeChainId !== targetChainId) {
         await switchChainAsync({ chainId: targetChainId });
       }
 
       // Map contract addresses
-      const { USDC, BRIDGE2 } = CONTRACTS[targetChainId];
+      const { USDC: USDC, BRIDGE2: BRIDGE2 } = CONTRACTS[targetChainId];
 
-      // Transfer USDC to the Bridge2 contract
-      const txHash = await writeContractAsync({
+      // Check if publicClient is available
+      if (!publicClient) {
+        setDepositError('Network client not available. Please try again.');
+        return;
+      }
+
+      // Simulate the call to get a request with correct gas params
+      const sim = await publicClient.simulateContract({
         address: USDC,
         abi: erc20Abi,
         functionName: 'transfer',
         args: [BRIDGE2, value],
+        account: address as Address,
       });
 
-      console.log('Sent deposit tx:', txHash);
+      // Preview gas usage and fee (in ETH)
+      const estGas =
+        sim.result === true
+          ? sim.request.gas
+          : await publicClient.estimateGas({ ...sim.request, to: USDC });
+      console.log('💵💵💵 Estimated gas:', estGas);
+
+      // Return early if gas estimation fails
+      if (!estGas) {
+        setDepositError('Unable to estimate gas. Please try again.');
+        return;
+      }
+
+      // Estimate fees
+      const fees = await publicClient.estimateFeesPerGas();
+      const maxFeePerGas = fees.maxFeePerGas ?? fees.gasPrice!;
+
+      // Total fee upper bound (ETH): estGas * maxFeePerGas
+      const totalFeeWei = estGas * maxFeePerGas;
+      const totalFeeEth = Number(formatUnits(totalFeeWei, 18));
+      console.log(
+        '💵💵💵 Estimated fee (ETH):',
+        totalFeeEth,
+        '\n💵💵💵 Estimated fee (Wei):',
+        totalFeeWei,
+      );
+
+      // Transfer USDC to the Bridge2 contract
+      const txHash = await writeContractAsync(sim.request);
+
+      console.log('📈📈📈 Sent deposit tx:', txHash);
     } catch (err) {
       console.error(err);
       setDepositError('Deposit failed. Please try again.');

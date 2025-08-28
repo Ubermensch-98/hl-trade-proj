@@ -54,13 +54,14 @@ async function fetchPerpSummary(
   params: PerpSummaryParams,
   signal?: AbortSignal,
 ): Promise<PerpSummaryResponse> {
+  console.log('🎞🎞🎞 fetchPerpSummary params:', params);
   const res = await fetch('/api/hyperliquid/info/clearinghouseState', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ...params }),
     signal,
   });
-  // console.log('🎞🎞🎞 fetchPerpSummary res:', res);
+  console.log('🎞🎞🎞 fetchPerpSummary res:', res);
 
   if (!res.ok) throw new Error(`Hyperliquid error: ${res.status}`);
 
