@@ -154,7 +154,7 @@ export function CandlestickChartToolbar({
       <div className="flex items-center gap-2 ml-auto">
         <ToggleGroup
           type="single"
-          defaultValue="ETH"
+          defaultValue="BTC"
           value={asset}
           onValueChange={handleAssetChange}
           variant="outline"
