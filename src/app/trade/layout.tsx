@@ -7,6 +7,7 @@ import Providers from '@/providers/provider';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Toaster } from '@/components/ui/sonner';
 import { HyperliquidFunds } from '@/components/web3/HyperliquidFunds';
+import { ApproveAgentButton } from '@/components/web3/ApproveAgentButton';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -15,7 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <Providers>
       <div className="flex min-h-screen flex-col">
         {/* Header */}
-        <header className="w-full bg-[#140929] text-white shadow-md">
+        <header className="w-full bg-[#140929] text-[#feffff] shadow-md">
           <div className="flex w-full items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
             <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
               <Link href="/" className="flex items-center gap-3">
@@ -34,8 +35,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             <nav className="space-x-4"></nav>
-
-            <ConnectButton />
+            <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
+              {/* Agent Approval Button */}
+              {/* <ApproveAgentButton /> */}
+              <ApproveAgentButton />
+              {/* Deposit USDC Button */}
+              <ConnectButton />
+            </div>
           </div>
         </header>
 
@@ -43,7 +49,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <main className="flex-grow bg-[#0b021d]">
           <div className="relative w-full h-full px-4 py-6 sm:px-6 lg:px-8">{children}</div>
         </main>
-        <Toaster duration={2000} />
+        <Toaster duration={3000} />
 
         {/* Footer */}
         <footer className="w-full flex flex-col bg-[#140929] text-white">

@@ -10,6 +10,7 @@ import {
   StartTime,
 } from '@/components/charts/ChartControls';
 import ChartTopControls from '@/components/charts/ChartTopControls';
+import { OpenPositionCard } from '@/components/web3/PlaceOrder';
 
 // Convert StartTime to milliseconds
 function startTimeToMs(startTime: StartTime): number {
@@ -71,7 +72,12 @@ export default function Home() {
             />
           </div>
         </div>
-        <DepositUSDC defaultNetwork="mainnet" />
+        <div className="flex flex-col">
+          {/* Deposit USDC Component */}
+          <DepositUSDC defaultNetwork="mainnet" />
+          {/* Open Position Component */}
+          <OpenPositionCard />
+        </div>
       </div>
     </>
   );

@@ -7,6 +7,9 @@
 !.vscode/launch.json       # (optional) keep debug configurations
 !.vscode/extensions.json   # (optional) recommend extensions
 
+# Logs
+logs/
+
 # Local history & workspace files
 .history/
 *.code-workspace
