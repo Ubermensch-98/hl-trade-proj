@@ -53,8 +53,8 @@ export function DepositUSDC({
   const chainId = network === 'mainnet' ? ARBITRUM_ONE : ARBITRUM_SEPOLIA;
   const token = USDC_ADDRESSES[chainId];
 
-  console.log('📃📃📃 Token address:', token);
-  console.log('📃📃📃 Chain ID:', chainId);
+  // console.log('📃📃📃 Token address:', token);
+  // console.log('📃📃📃 Chain ID:', chainId);
 
   // Account
   const { address, isConnected: isWalletConnected, chainId: activeChainId } = useAccount();
@@ -68,7 +68,7 @@ export function DepositUSDC({
   const { isLoading: isTransactionLoading, isSuccess: isTransactionSuccess } =
     useWaitForTransactionReceipt({ hash: txHash });
 
-  console.log('📃📃📃 useAccount address:', address);
+  // console.log('📃📃📃 useAccount address:', address);
 
   // Make sure addresses are parsed
   const tokenAddr: Address | undefined = token ? getAddress(token) : undefined;
@@ -97,7 +97,7 @@ export function DepositUSDC({
     },
   });
 
-  console.log('📃📃📃 Read contracts data:', readData);
+  // console.log('📃📃📃 Read contracts data:', readData);
 
   // Return early if there's an issue
   if (!token) return <div>USDC isn&apos;t on this chain (in this mapping)</div>;

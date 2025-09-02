@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 export function HyperliquidFunds(Props: { dex?: string }) {
   const { address, isConnected } = useAccount();
 
+  // Logs for debugging
   // console.log("💎💎💎 DEX in HLFunds:", Props.dex);
   // console.log("🚩🚩🚩 Address in HLFunds:", String(address));
 
@@ -12,9 +13,8 @@ export function HyperliquidFunds(Props: { dex?: string }) {
     type: 'clearinghouseState',
     user: String(address),
     dex: Props.dex,
+    enabled: isConnected && !!address,
   });
-
-  // console.log("💿💿💿 Data:", JSON.stringify(data));
 
   return (
     <div className="flex flex-col items-center gap-1">

@@ -6,6 +6,7 @@ export type PerpSummaryParams = {
   type: 'clearinghouseState';
   user: string; // User's account address (e.g., "0xabc..." )
   dex?: string; // Decentralized exchange identifier
+  enabled?: boolean; // Optional parameter to enable/disable the query
 };
 
 export type PerpSummaryResponse = {
@@ -20,7 +21,7 @@ export type PerpSummaryResponse = {
       entryPx: NumericString;
       leverage: {
         rawUsd: NumericString;
-        type: 'isolated' | 'cross' | (string & {}); // allow future values
+        type: 'isolated' | 'cross' | (string & {});
         value: number;
       };
       liquidationPx: NumericString;
@@ -31,7 +32,7 @@ export type PerpSummaryResponse = {
       szi: NumericString;
       unrealizedPnl: NumericString;
     };
-    type: 'oneWay' | 'hedged' | (string & {}); // "oneWay" in sample
+    type: 'oneWay' | 'hedged' | (string & {});
   }>;
   crossMaintenanceMarginUsed: NumericString;
   crossMarginSummary: {
@@ -51,7 +52,7 @@ export type PerpSummaryResponse = {
 };
 
 async function fetchPerpSummary(
-  params: PerpSummaryParams,
+  params: Omit<PerpSummaryParams, 'enabled'>,
   signal?: AbortSignal,
 ): Promise<PerpSummaryResponse> {
   console.log('🎞🎞🎞 fetchPerpSummary params:', params);
@@ -69,11 +70,13 @@ async function fetchPerpSummary(
 }
 
 export function usePerpSummary(params: PerpSummaryParams) {
+  const { enabled = true, ...queryParams } = params;
+
   return useQuery({
-    queryKey: ['hyperliquid:perpSummary', params],
-    queryFn: ({ signal }) => fetchPerpSummary(params, signal),
+    queryKey: ['hyperliquid:perpSummary', queryParams],
+    queryFn: ({ signal }) => fetchPerpSummary(queryParams, signal),
     staleTime: 30_000,
     refetchOnWindowFocus: false,
-    enabled: true,
+    enabled,
   });
 }
